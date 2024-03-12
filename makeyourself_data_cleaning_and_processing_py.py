@@ -52,6 +52,8 @@ dataset["Temperatura"].describe()
 srn.boxplot(dataset["Temperatura"]).set_title("Temperatura")
 srn.distplot(dataset["Temperatura"]).set_title("Temperatura")
 
+# Umidade
+# Problems: has outliers
 dataset["Umidade"].describe()
 srn.boxplot(dataset["Umidade"]).set_title("Umidade")
 srn.distplot(dataset["Umidade"]).set_title("Umidade")
@@ -64,6 +66,7 @@ dataset.isnull().sum()
 
 # Categoric variables
   # null values will be replaced by moda
+  # values outside the domain will be replace by moda
 
 # Numeric variables
   # null values will be replaced by median
@@ -73,3 +76,16 @@ dataset["Vento"].fillna("FALSO", inplace=True)
 median = sts.median(dataset["Umidade"])
 median
 dataset["Umidade"].fillna(median, inplace=True)
+
+dataset.loc[dataset["Aparencia"].isin(["menos"]), "Aparencia"] = "sol"
+dataset.groupby("Aparencia").size()
+
+dataset.loc[(dataset["Temperatura"] > 1200)]
+median = sts.median(dataset["Temperatura"])
+median
+dataset.loc[(dataset["Temperatura"] > 1200), "Temperatura"] = median
+
+dataset.loc[(dataset["Umidade"] >= 200)]
+median = sts.median(dataset["Umidade"])
+median
+dataset.loc[(dataset["Umidade"] >= 200), "Umidade"] = median
